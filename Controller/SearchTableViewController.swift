@@ -12,8 +12,10 @@ class SearchTableViewController: UITableViewController {
     
     var allCountry = AllCountry()
     var tempCountry = [String]()
-    var weatherStore = WeatherStore()
-
+    
+    
+    var delegate:SaveWeatherDelegate?
+    
     
     //MARK: - lifecycle
     override func viewDidLoad() {
@@ -22,31 +24,6 @@ class SearchTableViewController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.snp.makeConstraints { make in
             
-        }
-    }
-    
-    
-    func getWeatherData(city: String){
-        let address = "https://api.openweathermap.org/data/2.5/weather?"
-        if let url = URL(string: address + "q=\(city)&units=metric" + "&appid=" + APIKeys.apikey) {
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                if let error = error{
-                    print("Error \(error.localizedDescription)")
-                }else if let response = response as? HTTPURLResponse, let data = data{
-                    
-                    print("Status code \(response.statusCode)")
-                    
-                    let decoder = JSONDecoder()
-                    if let Data = try? decoder.decode(CurrentWeatherData.self, from: data){
-                        //把要做的事情放這裡
-                        self.weatherStore.append(Data)
-                        print(Data.weather[0].description)
-//                        DispatchQueue.main.async {
-//                            self.MainTableView.reloadData()
-//                        }
-                    }
-                }
-            }.resume()
         }
     }
     
@@ -67,13 +44,13 @@ class SearchTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let country = tempCountry[indexPath.row]
         let vc = AddWeatherViewController()
-//        vc.saveAlarmDataDelegate = self
-//        let weather = weatherStore.weathers[indexPath.row]
-        
+        vc.getWeatherData(city: country)
+        vc.delegate = self.delegate
         let addWeatherNC = UINavigationController(rootViewController: vc)
         present(addWeatherNC, animated: true, completion: nil)
+        dismiss(animated: true)
     }
 }
 
