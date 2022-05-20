@@ -11,11 +11,8 @@ import SnapKit
 class MainViewController: UIViewController {
     
     var allCountry = AllCountry()
-    var weatherStore = WeatherStore()
     var searchTableViewController = SearchTableViewController()
-    
-    
-    
+
     let mainTableView:UITableView = {
         let mainTableView = UITableView(frame: .zero, style: .insetGrouped)
         mainTableView.register(MainTableViewCell.self, forCellReuseIdentifier: "cell")
@@ -23,11 +20,13 @@ class MainViewController: UIViewController {
         return mainTableView
     }()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         mainTableView.dataSource = self
         mainTableView.delegate = self
+        searchTableViewController.delegate = self
         setupNavigation()
         getCountry()
         setupUI()
@@ -38,13 +37,12 @@ class MainViewController: UIViewController {
         mainTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
     }
     
     private func setupNavigation(){
         navigationItem.title = "Weather"
         navigationItem.rightBarButtonItem = editButtonItem
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(newList))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .done, target: self, action: #selector(moreAction))
         self.navigationController?.navigationBar.prefersLargeTitles = true
         
         let searchController = UISearchController(searchResultsController: searchTableViewController)
@@ -54,8 +52,8 @@ class MainViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
-    @objc func newList(){
-        getWeatherData(city: "Tainan")
+    @objc func moreAction(){
+       
     }
     
     func getCountry(){
@@ -80,31 +78,6 @@ class MainViewController: UIViewController {
         }
     }
     
-    
-    func getWeatherData(city: String){
-        let address = "https://api.openweathermap.org/data/2.5/weather?"
-        if let url = URL(string: address + "q=\(city)&units=metric" + "&appid=" + APIKeys.apikey) {
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                if let error = error{
-                    print("Error \(error.localizedDescription)")
-                }else if let response = response as? HTTPURLResponse, let data = data{
-                    
-                    print("Status code \(response.statusCode)")
-                    
-                    let decoder = JSONDecoder()
-                    if let Data = try? decoder.decode(CurrentWeatherData.self, from: data){
-                        self.weatherStore.append(Data)
-                        print(self.weatherStore.weathers.count)
-                        DispatchQueue.main.async {
-                            self.mainTableView.reloadData()
-                        }
-                        
-                    }
-                }
-            }.resume()
-        }
-    }
-    
 }
 
 extension MainViewController: UITableViewDataSource{
@@ -114,8 +87,7 @@ extension MainViewController: UITableViewDataSource{
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? MainTableViewCell else {return UITableViewCell()}
-        print("qwweeee")
-        let currentWeather = weatherStore.weathers[indexPath.row]
+        let currentWeather = WeatherStore.shared.weathers[indexPath.section]
         cell.locationLabel.text = currentWeather.name
         cell.timeLabel.text = "暫時沒有"
         cell.destributionLabel.text = currentWeather.weather[indexPath.row].description
@@ -132,8 +104,6 @@ extension MainViewController: UITableViewDataSource{
     }
     
 }
-
-
 extension MainViewController:UITableViewDelegate{
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
@@ -148,7 +118,7 @@ extension MainViewController:UITableViewDelegate{
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return weatherStore.weathers.count
+        return WeatherStore.shared.weathers.count
     }
 }
 
@@ -165,15 +135,13 @@ extension MainViewController:UISearchResultsUpdating{
     }
 }
 
-
 extension MainViewController:SaveWeatherDelegate{
     func saveWeather(weatherData: CurrentWeatherData) {
-        weatherStore.append(weatherData)
-        print(weatherStore.weathers.count)
+        WeatherStore.shared.append(weatherData)
+//        print(weatherData)
         DispatchQueue.main.async {
             self.mainTableView.reloadData()
         }
-
     }
 }
 

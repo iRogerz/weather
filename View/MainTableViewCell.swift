@@ -8,8 +8,6 @@ import UIKit
 
 class MainTableViewCell: UITableViewCell {
 
-    
-    
     let locationLabel:UILabel = {
         let label = UILabel()
         

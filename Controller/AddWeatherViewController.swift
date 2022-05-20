@@ -9,8 +9,6 @@ import UIKit
 
 class AddWeatherViewController: UIViewController {
     
-    
-    var addWeatherStore = WeatherStore()
     let addWeatherView = AddWeatherView()
     var tempWeatherData =  [CurrentWeatherData]()
     
@@ -49,8 +47,11 @@ class AddWeatherViewController: UIViewController {
                     
                     let decoder = JSONDecoder()
                     if let Data = try? decoder.decode(CurrentWeatherData.self, from: data){
-                        //把要做的事情放這裡
+                        
+                        //需修改！！！！！！
                         self.tempWeatherData.append(Data)
+                        //需修改！！！！！！
+                        
                         DispatchQueue.main.async {
                             self.addWeatherView.locationLabel.text = Data.name
                             self.addWeatherView.tempLabel.text = String(Data.main.temp)
@@ -71,10 +72,12 @@ class AddWeatherViewController: UIViewController {
         self.dismiss(animated: true)
         
     }
-    
+
     @objc func saveButton(){
-        delegate?.saveWeather(weatherData: tempWeatherData[0])
-        self.dismiss(animated: true)
-    }
     
+        delegate?.saveWeather(weatherData: tempWeatherData[0])
+        dismiss(animated: true, completion: {
+            self.presentingViewController?.dismiss(animated: false)
+        })
+    }
 }

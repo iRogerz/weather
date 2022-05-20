@@ -13,7 +13,6 @@ class SearchTableViewController: UITableViewController {
     var allCountry = AllCountry()
     var tempCountry = [String]()
     
-    
     var delegate:SaveWeatherDelegate?
     
     
@@ -27,7 +26,6 @@ class SearchTableViewController: UITableViewController {
         }
     }
     
-    
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -36,7 +34,6 @@ class SearchTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let item = tempCountry[indexPath.row]
         cell.textLabel?.text = item
@@ -50,7 +47,7 @@ class SearchTableViewController: UITableViewController {
         vc.delegate = self.delegate
         let addWeatherNC = UINavigationController(rootViewController: vc)
         present(addWeatherNC, animated: true, completion: nil)
-        dismiss(animated: true)
+//        dismiss(animated: true)
     }
 }
 

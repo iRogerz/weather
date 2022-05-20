@@ -10,7 +10,7 @@ import Foundation
 
 class WeatherStore{
     
-//    static let instance = WeatherStore()
+    static let shared = WeatherStore()
     
     private(set) var weathers: [CurrentWeatherData] = []
     
@@ -24,7 +24,7 @@ class WeatherStore{
     func append(_ weather:CurrentWeatherData){
         weathers.append(weather)
     }
-    
-//    private init(){}
+
+    private init(){}
     
 }
