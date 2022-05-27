@@ -10,13 +10,14 @@ import UIKit
 class AddWeatherViewController: UIViewController {
     
     let addWeatherView = AddWeatherView()
-    var tempWeatherData =  [CurrentWeatherData]()
+    var tempWeatherData:CurrentWeatherData? = nil
     
     var delegate: SaveWeatherDelegate?
     
     override func loadView() {
         self.view = addWeatherView
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .secondarySystemGroupedBackground
@@ -25,7 +26,7 @@ class AddWeatherViewController: UIViewController {
     }
     
     func setupNavigation(){
-        navigationItem.title = "Add Alarm"
+        navigationItem.title = "Weather"
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButton))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButton))
         
@@ -35,9 +36,40 @@ class AddWeatherViewController: UIViewController {
         navigationItem.leftBarButtonItem?.tintColor = .white
     }
     
-    func getWeatherData(city: String){
-        let address = "https://api.openweathermap.org/data/2.5/weather?"
-        if let url = URL(string: address + "q=\(city)&units=metric" + "&appid=" + APIKeys.apikey) {
+//    func selectURL(city: String) -> URL{
+//        let address = "https://api.openweathermap.org/data/2.5/weather?"
+//        let urlResult = URL(string: address + "q=\(city)&units=metric" + "&appid=" + APIKeys.apikey)
+//        return urlResult!
+//    }
+//    func selectURL(lat: String, lon: String) -> URL{
+//        let address = "https://api.openweathermap.org/data/2.5/weather?"
+//        let urlResult = URL(string: address + "lat=\(lat)" + "&lon=\(lon)" + "&appid=\(APIKeys.apikey)")!
+//        return urlResult
+//    }
+    
+    func buildRequest(parameters: [String: Any]) -> URL? {
+        var components = URLComponents(string: "https://api.openweathermap.org/data/2.5/weather")
+        var queryItems = parameters.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
+        queryItems.append(URLQueryItem(name: "appid", value: APIKeys.apikey))
+        components?.queryItems = queryItems
+        print(components?.url)
+        return components?.url
+    }
+    
+    func getWeather() {
+        WeatherService.getWeather(by: .city("taiwan")) { result in
+            switch result {
+            case .success(let data):
+                // get weather data
+                break
+            case .failure(let error):
+                break
+            }
+        }
+    }
+    
+    func getWeatherData(url: URL?){
+        if let url = url {
             URLSession.shared.dataTask(with: url) { data, response, error in
                 if let error = error{
                     print("Error \(error.localizedDescription)")
@@ -49,7 +81,8 @@ class AddWeatherViewController: UIViewController {
                     if let Data = try? decoder.decode(CurrentWeatherData.self, from: data){
                         
                         //需修改！！！！！！
-                        self.tempWeatherData.append(Data)
+                        print(Data)
+                        self.tempWeatherData = Data
                         //需修改！！！！！！
                         
                         DispatchQueue.main.async {
@@ -64,20 +97,15 @@ class AddWeatherViewController: UIViewController {
         }
     }
     
-    func setupViews(){
-        
-    }
-    
     @objc func cancelButton(){
         self.dismiss(animated: true)
-        
     }
 
     @objc func saveButton(){
-    
-        delegate?.saveWeather(weatherData: tempWeatherData[0])
-        dismiss(animated: true, completion: {
-            self.presentingViewController?.dismiss(animated: false)
-        })
+        delegate?.saveWeather(weatherData: tempWeatherData!)
+//        dismiss(animated: true, completion: {
+//            self.presentingViewController?.dismiss(animated: false)
+//        })
+        view.window?.rootViewController?.dismiss(animated: true)
     }
 }

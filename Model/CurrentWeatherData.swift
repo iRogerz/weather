@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct CurrentWeatherData: Decodable{
+struct CurrentWeatherData: Codable{
     var name: String
     var dt: TimeInterval
     var id: Int
@@ -17,18 +17,18 @@ struct CurrentWeatherData: Decodable{
     var main: Main
 }
 
-struct Coord: Decodable{
+struct Coord: Codable{
     var lon: Double
     var lat: Double
 }
 
-struct Weather: Decodable{
+struct Weather: Codable{
     var icon: String
     var main: String
     var description: String
 }
 
-struct Main: Decodable{
+struct Main: Codable{
     var temp: Double
     var temp_min: Double
     var temp_max: Double

@@ -12,25 +12,25 @@ class AddWeatherView: UIView {
     //MARK: - UI
     let locationLabel:UILabel = {
         let label = UILabel()
-        label.text = "qweqe"
+        label.text = "_"
         return label
     }()
     
     let tempLabel: UILabel = {
         let label = UILabel()
-        label.text = "ssss"
+        label.text = "_"
         return label
     }()
     
     let destributionLabel:UILabel = {
         let label = UILabel()
-        label.text = "qwwe"
+        label.text = "_"
         return label
     }()
     
     let temp_MaxMin: UILabel = {
         let label = UILabel()
-        label.text = "SDFWF"
+        label.text = "_"
         return label
     }()
     

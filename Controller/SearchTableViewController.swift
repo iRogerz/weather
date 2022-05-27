@@ -8,7 +8,7 @@
 import UIKit
 
 class SearchTableViewController: UITableViewController {
-
+ 
     
     var allCountry = AllCountry()
     var tempCountry = [String]()
@@ -19,19 +19,25 @@ class SearchTableViewController: UITableViewController {
     //MARK: - lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        tableView.overrideUserInterfaceStyle = .dark
+        //        tableView.overrideUserInterfaceStyle = .dark
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.snp.makeConstraints { make in
             
         }
+        
+        let searchController = UISearchController(searchResultsController: nil)
+//        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.searchBar.placeholder = "Search"
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     // MARK: - Table view data source
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tempCountry.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
@@ -43,12 +49,22 @@ class SearchTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let country = tempCountry[indexPath.row]
         let vc = AddWeatherViewController()
-        vc.getWeatherData(city: country)
+//        let url = vc.selectURL(city: country)
+        let url = vc.buildRequest(parameters: ["q" : country])
+        vc.getWeatherData(url: url)
+//        WeatherService.getWeather(by: .city(country)) { result in
+//            switch result {
+//            case .success(let data):
+//                // get weather data
+//                break
+//            case .failure(let error):
+//                break
+//            }
+//        }
         vc.delegate = self.delegate
         let addWeatherNC = UINavigationController(rootViewController: vc)
         present(addWeatherNC, animated: true, completion: nil)
 //        dismiss(animated: true)
     }
 }
-
 

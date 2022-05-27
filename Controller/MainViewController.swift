@@ -7,12 +7,16 @@
 
 import UIKit
 import SnapKit
+import CoreLocation
 
 class MainViewController: UIViewController {
     
     var allCountry = AllCountry()
     var searchTableViewController = SearchTableViewController()
-
+    var coordinateSearchViewController = CoordinateSearchViewController()
+    let locationManager = CLLocationManager()
+    
+    //MARK: - UI
     let mainTableView:UITableView = {
         let mainTableView = UITableView(frame: .zero, style: .insetGrouped)
         mainTableView.register(MainTableViewCell.self, forCellReuseIdentifier: "cell")
@@ -20,16 +24,26 @@ class MainViewController: UIViewController {
         return mainTableView
     }()
     
-    
+    //MARK: - lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         mainTableView.dataSource = self
         mainTableView.delegate = self
         searchTableViewController.delegate = self
+        coordinateSearchViewController.delegate = self
+        location()
         setupNavigation()
-        getCountry()
         setupUI()
+        allCountry.getCountry()
+    }
+    
+    func location(){
+        locationManager.delegate = self  //委派給ViewController
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest  //設定為最佳精度
+        locationManager.requestWhenInUseAuthorization()  //user授權
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()  //開始update user位置
     }
     
     func setupUI(){
@@ -40,46 +54,49 @@ class MainViewController: UIViewController {
     }
     
     private func setupNavigation(){
+        let systemMenu = UIMenu(title: "",options: .displayInline, children: [
+            UIAction(title: "Edit List", image: UIImage(systemName: "pencil"), handler: { (_) in
+                
+            }),
+            UIAction(title: "Notification", image: UIImage(systemName: "bell.badge"), handler: { (_) in
+            }),
+        ])
+        let tempMenu = UIMenu(title: "", options: .singleSelection, children: [
+            UIAction(title: "Celsius", image: UIImage(systemName: "magnifyingglass"),state: .on, handler: { (_) in
+                
+            }),
+            UIAction(title: "Fahrenheit", image: UIImage(systemName: "magnifyingglass.circle"), handler: { (_) in
+                
+            }),
+        ])
+        let searchMenu = UIMenu(title: "", options: .displayInline, children: [
+            UIAction(title: "Coordinate Search", image: UIImage(systemName: "magnifyingglass"), handler: { (_) in
+                self.navigationController?.pushViewController(self.coordinateSearchViewController, animated: true)
+            }),
+            UIAction(title: "ZIP Code Search", image: UIImage(systemName: "magnifyingglass.circle"), handler: { (_) in
+                self.navigationController?.pushViewController(self.searchTableViewController, animated: true)
+            }),
+        ])
+        
+        let subMenu = UIMenu(title: "", options: .displayInline, children: [systemMenu, tempMenu ,searchMenu])
+        
         navigationItem.title = "Weather"
         navigationItem.rightBarButtonItem = editButtonItem
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .done, target: self, action: #selector(moreAction))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "", image: UIImage(systemName: "ellipsis.circle"), primaryAction: nil, menu: subMenu)
         self.navigationController?.navigationBar.prefersLargeTitles = true
         
+        //searchController
         let searchController = UISearchController(searchResultsController: searchTableViewController)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = true
+        searchController.searchBar.placeholder = "Search for a city or a country"
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
-    }
-    
-    @objc func moreAction(){
-       
-    }
-    
-    func getCountry(){
-        let address = "https://countriesnow.space/api/v0.1/countries"
-        if let url = URL(string: address) {
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                if let error = error{
-                    print("Error \(error.localizedDescription)")
-                }else if let response = response as? HTTPURLResponse, let data = data{
-                    
-                    print("Status code \(response.statusCode)")
-                    
-                    let decoder = JSONDecoder()
-                    if let Data = try? decoder.decode(CountryData.self, from: data){
-                        //把要做的事情放這裡
-                        for i in 0..<Data.data.count{
-                            self.allCountry.append(Data.data[i].country)
-                        }
-                    }
-                }
-            }.resume()
-        }
+        
     }
     
 }
-
+//MARK: - TableView
 extension MainViewController: UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -93,13 +110,9 @@ extension MainViewController: UITableViewDataSource{
         cell.destributionLabel.text = currentWeather.weather[indexPath.row].description
         cell.tempLabel.text = String(currentWeather.main.temp)
         cell.temp_MaxMin.text = String(currentWeather.main.temp_max) + ":" + String(currentWeather.main.temp_min)
-        //        cell.textLabel?.text = currentWeather.name
-        //        cell.detailTextLabel?.text = currentWeather.weather[indexPath.row].description
         //        cell.backgroundColor = UIColor.white
         //        cell.layer.borderColor = UIColor.black.cgColor
         cell.layer.borderWidth = 1
-        //        cell.layer.cornerRadius = 8
-        //        cell.clipsToBounds = true
         return cell
     }
     
@@ -120,8 +133,29 @@ extension MainViewController:UITableViewDelegate{
     func numberOfSections(in tableView: UITableView) -> Int {
         return WeatherStore.shared.weathers.count
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = AddWeatherViewController()
+        let AddWeatherNC = UINavigationController(rootViewController: vc)
+        AddWeatherNC.modalPresentationStyle = .fullScreen
+        AddWeatherNC.tabBarItem.image = UIImage(systemName: "list.bullet")
+        //        AddWeatherNC.modalTransitionStyle = .partialCurl
+        present(AddWeatherNC, animated: true)
+        tableView.deselectRow(at: indexPath, animated: false)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        print(indexPath.section)
+        if indexPath.section != 0{
+            if editingStyle == .delete{
+                WeatherStore.shared.remove(indexPath.section)
+                mainTableView.reloadData()
+            }
+        }
+    }
 }
 
+//MARK: - UISearch
 extension MainViewController:UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, searchText.isEmpty == false{
@@ -133,12 +167,22 @@ extension MainViewController:UISearchResultsUpdating{
         }
         searchTableViewController.tableView.reloadData()
     }
+    
 }
 
+//extension MainViewController:UISearchBarDelegate{
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//        if searchBar.text?.contains(",") == true{
+//            
+//        }
+//    }
+//}
+
+//MARK: - SaveWeatherDelegate
 extension MainViewController:SaveWeatherDelegate{
     func saveWeather(weatherData: CurrentWeatherData) {
         WeatherStore.shared.append(weatherData)
-//        print(weatherData)
+        //        print(weatherData)
         DispatchQueue.main.async {
             self.mainTableView.reloadData()
         }
@@ -147,4 +191,18 @@ extension MainViewController:SaveWeatherDelegate{
 
 protocol SaveWeatherDelegate:AnyObject{
     func saveWeather(weatherData:CurrentWeatherData)
+}
+
+
+extension MainViewController:CLLocationManagerDelegate{
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+                let latitude = location.coordinate.latitude
+                let longitude = location.coordinate.longitude
+                // Handle location update
+                print(latitude)
+                print(longitude)
+                
+            }
+    }
 }
