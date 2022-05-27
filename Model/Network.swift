@@ -82,6 +82,7 @@ class WeatherService {
 
 enum WeatherMethod {
     case city(String)
-    case coord(Double, Double)
+    //應該要放Double
+    case coord(String, String)
     case code(Int)
 }

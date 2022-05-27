@@ -28,14 +28,18 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        mainTableView.dataSource = self
-        mainTableView.delegate = self
-        searchTableViewController.delegate = self
-        coordinateSearchViewController.delegate = self
+        delegate()
         location()
         setupNavigation()
         setupUI()
         allCountry.getCountry()
+    }
+    
+    func delegate(){
+        mainTableView.dataSource = self
+        mainTableView.delegate = self
+        searchTableViewController.delegate = self
+        coordinateSearchViewController.delegate = self
     }
     
     func location(){
@@ -46,12 +50,13 @@ class MainViewController: UIViewController {
         locationManager.startUpdatingLocation()  //開始update user位置
     }
     
-    func setupUI(){
+    private func setupUI(){
         view.addSubview(mainTableView)
         mainTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
+    
     
     private func setupNavigation(){
         let systemMenu = UIMenu(title: "",options: .displayInline, children: [
@@ -94,8 +99,8 @@ class MainViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
         
     }
-    
 }
+
 //MARK: - TableView
 extension MainViewController: UITableViewDataSource{
     
@@ -170,19 +175,12 @@ extension MainViewController:UISearchResultsUpdating{
     
 }
 
-//extension MainViewController:UISearchBarDelegate{
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        if searchBar.text?.contains(",") == true{
-//            
-//        }
-//    }
-//}
 
 //MARK: - SaveWeatherDelegate
 extension MainViewController:SaveWeatherDelegate{
     func saveWeather(weatherData: CurrentWeatherData) {
         WeatherStore.shared.append(weatherData)
-        //        print(weatherData)
+        
         DispatchQueue.main.async {
             self.mainTableView.reloadData()
         }
@@ -193,16 +191,12 @@ protocol SaveWeatherDelegate:AnyObject{
     func saveWeather(weatherData:CurrentWeatherData)
 }
 
-
 extension MainViewController:CLLocationManagerDelegate{
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-                let latitude = location.coordinate.latitude
-                let longitude = location.coordinate.longitude
-                // Handle location update
-                print(latitude)
-                print(longitude)
-                
-            }
+            let latitude = location.coordinate.latitude
+            let longitude = location.coordinate.longitude
+            // Handle location update
+        }
     }
 }

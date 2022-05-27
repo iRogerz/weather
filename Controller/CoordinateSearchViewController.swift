@@ -24,18 +24,16 @@ class CoordinateSearchViewController: UIViewController {
         lat.clearButtonMode = .whileEditing
         lat.keyboardType = .numbersAndPunctuation
         lat.borderStyle = .roundedRect
-        //        lat.backgroundColor = .lightGray
         return lat
     }()
     
     let lon:UITextField = {
         let lon = UITextField()
         lon.placeholder = "please input lon"
-        //        myTextField.returnKeyType = .done
         lon.clearButtonMode = .whileEditing
         lon.keyboardType = .numbersAndPunctuation
         lon.borderStyle = .roundedRect
-        //        lon.backgroundColor = .systemCyan
+        //        myTextField.returnKeyType = .done
         return lon
     }()
     
@@ -57,20 +55,18 @@ class CoordinateSearchViewController: UIViewController {
     }
     
     func setupUI(){
-        
         let stackView = UIStackView(arrangedSubviews: [
             label, lat, lon, searchButton
         ])
         stackView.axis = .vertical
         stackView.spacing = 15
-        //        stackView.alignment = .center
         view.addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(80)
-            //            make.centerX.equalTo(view.safeAreaLayoutGuide)
             make.top.equalTo(view.safeAreaLayoutGuide).inset(50)
         }
     }
+    
     
     @objc func search(){
         let vc = AddWeatherViewController()
@@ -78,8 +74,7 @@ class CoordinateSearchViewController: UIViewController {
             if (lat != "" && lon != ""){
                 
             }
-            let url = vc.buildRequest(parameters: ["lat" : lat, "lon" : lon])
-            vc.getWeatherData(url: url)
+            vc.getWeather(.coord(lat, lon))
             vc.delegate = self.delegate
             let addWeatherNC = UINavigationController(rootViewController: vc)
             present(addWeatherNC, animated: true, completion: nil)

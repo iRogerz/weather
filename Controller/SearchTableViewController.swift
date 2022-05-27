@@ -49,18 +49,7 @@ class SearchTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let country = tempCountry[indexPath.row]
         let vc = AddWeatherViewController()
-//        let url = vc.selectURL(city: country)
-        let url = vc.buildRequest(parameters: ["q" : country])
-        vc.getWeatherData(url: url)
-//        WeatherService.getWeather(by: .city(country)) { result in
-//            switch result {
-//            case .success(let data):
-//                // get weather data
-//                break
-//            case .failure(let error):
-//                break
-//            }
-//        }
+        vc.getWeather(.city(country))
         vc.delegate = self.delegate
         let addWeatherNC = UINavigationController(rootViewController: vc)
         present(addWeatherNC, animated: true, completion: nil)
@@ -68,3 +57,10 @@ class SearchTableViewController: UITableViewController {
     }
 }
 
+//extension SearchTableViewController:UISearchBarDelegate{
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//        if searchBar.text?.contains(",") == true{
+//
+//        }
+//    }
+//}

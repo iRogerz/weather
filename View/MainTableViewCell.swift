@@ -46,10 +46,6 @@ class MainTableViewCell: UITableViewCell {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         
         setupUI()
-//        textLabel?.font = UIFont.systemFont(ofSize: 50)
-//        textLabel?.textColor = .lightGray
-//        detailTextLabel?.textColor = .lightGray
-//        detailTextLabel?.font = UIFont.systemFont(ofSize: 14)
     }
     
     required init?(coder: NSCoder) {

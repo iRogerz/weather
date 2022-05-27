@@ -15,14 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        WeatherService.getWeather(by: .city("tainan")) { result in
-            switch result {
-            case .success(let data):
-                print("WeatherService Success: ",data)
-            case .failure(let error):
-                print("WeatherService Error: ",error.localizedDescription)
-            }
-        }
         return true
     }
 
