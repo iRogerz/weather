@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let controller = MainViewController()
         let navController = UINavigationController(rootViewController: controller)
         window?.rootViewController = navController
-//        window?.overrideUserInterfaceStyle = .dark
+        window?.overrideUserInterfaceStyle = .dark
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

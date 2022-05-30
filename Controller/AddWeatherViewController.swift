@@ -41,6 +41,7 @@ class AddWeatherViewController: UIViewController {
             switch result {
             case .success(let data):
                 // get weather data
+                self.tempWeatherData = data
                 DispatchQueue.main.async { [self] in
                     addWeatherView.locationLabel.text = data.name
                     addWeatherView.tempLabel.text = String(data.main.temp)
@@ -63,5 +64,6 @@ class AddWeatherViewController: UIViewController {
         delegate?.saveWeather(weatherData: tempWeatherData!)
         //        dismiss(animated: true)
         view.window?.rootViewController?.dismiss(animated: true)
+        
     }
 }

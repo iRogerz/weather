@@ -19,18 +19,16 @@ struct Country:Decodable{
     var cities:[String]
 }
 
-
-
 class AllCountry{
     
-    var countrys =  [String]()
+    var countrys = [String]()
     
     func append(_ country:String){
         countrys.append(country)
         
-        if country.lowercased() == "taiwan" {
-            print("Find taiwan")
-        }
+//        if country.lowercased() == "taiwan" {
+//            print("Find taiwan")
+//        }
     }
     
     func getCountry(){
@@ -45,7 +43,10 @@ class AllCountry{
                     
                     let decoder = JSONDecoder()
                     if let data = try? decoder.decode(CountryData.self, from: data){
-                        for country in data.data.sorted(by: {$0.country < $1.country}) {
+//                        for country in data.data.sorted(by: {$0.country < $1.country}) {
+//                            self.append(country.country)
+//                        }
+                        for country in data.data{
                             self.append(country.country)
                         }
                     }

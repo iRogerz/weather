@@ -50,7 +50,7 @@ class CoordinateSearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+//        overrideUserInterfaceStyle = .dark
         setupUI()
     }
     
@@ -67,14 +67,13 @@ class CoordinateSearchViewController: UIViewController {
         }
     }
     
-    
     @objc func search(){
         let vc = AddWeatherViewController()
         if let lat = lat.text,let lon = lon.text{
             if (lat != "" && lon != ""){
                 
             }
-            vc.getWeather(.coord(lat, lon))
+            vc.getWeather(.coord(Double(lat)!, Double(lon)!))
             vc.delegate = self.delegate
             let addWeatherNC = UINavigationController(rootViewController: vc)
             present(addWeatherNC, animated: true, completion: nil)

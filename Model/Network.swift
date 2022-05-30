@@ -7,6 +7,8 @@
 
 import Foundation
 
+
+//很難 多研究
 class Network {
     
     static func send(url: String,
@@ -53,6 +55,8 @@ class WeatherService {
     static func getWeather(by method: WeatherMethod,
                            completion: @escaping (Result<CurrentWeatherData, Error>) -> Void) {
         var parameters: [String: Any] = [:]
+        //攝氏
+        parameters["units"] = "metric"
         switch method {
         case .city(let city):
             parameters["q"] = city
@@ -83,6 +87,6 @@ class WeatherService {
 enum WeatherMethod {
     case city(String)
     //應該要放Double
-    case coord(String, String)
+    case coord(Double, Double)
     case code(Int)
 }

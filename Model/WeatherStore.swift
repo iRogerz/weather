@@ -19,7 +19,21 @@ class WeatherStore{
             saveData()
         }
     }
-    
+    func updateAPI(){
+        for index in 0...weathers.count-1{
+            WeatherService.getWeather(by: .city(weathers[index].name)) { result in
+                switch result {
+                case .success(let data):
+                    // get weather data
+                    self.weathers[index] = data
+                    break
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    break
+                }
+            }
+        }
+    }
     
     func remove(_ index:Int){
         weathers.remove(at: index)
@@ -31,7 +45,13 @@ class WeatherStore{
     func append(_ weather:CurrentWeatherData){
         weathers.append(weather)
     }
-    
+    func changeLocation(data:CurrentWeatherData){
+        if weathers.isEmpty{
+            weathers.insert(data, at: 0)
+        }else{
+            weathers[0] = data
+        }
+    }
     
     private func saveData(){
         let encoder = JSONEncoder()

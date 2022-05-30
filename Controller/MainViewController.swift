@@ -8,13 +8,16 @@
 import UIKit
 import SnapKit
 import CoreLocation
+import Foundation
 
+var timer: Timer?
 class MainViewController: UIViewController {
     
     var allCountry = AllCountry()
     var searchTableViewController = SearchTableViewController()
     var coordinateSearchViewController = CoordinateSearchViewController()
     let locationManager = CLLocationManager()
+    
     
     //MARK: - UI
     let mainTableView:UITableView = {
@@ -33,6 +36,18 @@ class MainViewController: UIViewController {
         setupNavigation()
         setupUI()
         allCountry.getCountry()
+        //API大概10分鐘才會更新一次，我設定一分鐘就偵測一次
+        timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(callAPI), userInfo: nil, repeats: true)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        timer?.invalidate()
+    }
+    
+    @objc func callAPI(){
+        WeatherStore.shared.updateAPI()
+        mainTableView.reloadData()
     }
     
     func delegate(){
@@ -57,7 +72,6 @@ class MainViewController: UIViewController {
         }
     }
     
-    
     private func setupNavigation(){
         let systemMenu = UIMenu(title: "",options: .displayInline, children: [
             UIAction(title: "Edit List", image: UIImage(systemName: "pencil"), handler: { (_) in
@@ -66,24 +80,17 @@ class MainViewController: UIViewController {
             UIAction(title: "Notification", image: UIImage(systemName: "bell.badge"), handler: { (_) in
             }),
         ])
-        let tempMenu = UIMenu(title: "", options: .singleSelection, children: [
-            UIAction(title: "Celsius", image: UIImage(systemName: "magnifyingglass"),state: .on, handler: { (_) in
-                
-            }),
-            UIAction(title: "Fahrenheit", image: UIImage(systemName: "magnifyingglass.circle"), handler: { (_) in
-                
-            }),
-        ])
         let searchMenu = UIMenu(title: "", options: .displayInline, children: [
-            UIAction(title: "Coordinate Search", image: UIImage(systemName: "magnifyingglass"), handler: { (_) in
+            UIAction(title: "Coordinate Search", image: UIImage(systemName: "magnifyingglass"), handler: { _ in
+                self.coordinateSearchViewController.view.backgroundColor = .black
                 self.navigationController?.pushViewController(self.coordinateSearchViewController, animated: true)
             }),
-            UIAction(title: "ZIP Code Search", image: UIImage(systemName: "magnifyingglass.circle"), handler: { (_) in
+            UIAction(title: "ZIP Code Search", image: UIImage(systemName: "magnifyingglass.circle"), handler: { _ in
                 self.navigationController?.pushViewController(self.searchTableViewController, animated: true)
             }),
         ])
         
-        let subMenu = UIMenu(title: "", options: .displayInline, children: [systemMenu, tempMenu ,searchMenu])
+        let subMenu = UIMenu(title: "", options: .displayInline, children: [systemMenu, searchMenu])
         
         navigationItem.title = "Weather"
         navigationItem.rightBarButtonItem = editButtonItem
@@ -111,10 +118,10 @@ extension MainViewController: UITableViewDataSource{
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? MainTableViewCell else {return UITableViewCell()}
         let currentWeather = WeatherStore.shared.weathers[indexPath.section]
         cell.locationLabel.text = currentWeather.name
-        cell.timeLabel.text = "暫時沒有"
+        cell.timeLabel.text = currentWeather.dt.stringTime
         cell.destributionLabel.text = currentWeather.weather[indexPath.row].description
-        cell.tempLabel.text = String(currentWeather.main.temp)
-        cell.temp_MaxMin.text = String(currentWeather.main.temp_max) + ":" + String(currentWeather.main.temp_min)
+        cell.tempLabel.text = String(lround(currentWeather.main.temp))
+        cell.temp_MaxMin.text = "H: \(lround(currentWeather.main.temp_max))   L: \(lround(currentWeather.main.temp_min))"
         //        cell.backgroundColor = UIColor.white
         //        cell.layer.borderColor = UIColor.black.cgColor
         cell.layer.borderWidth = 1
@@ -142,15 +149,15 @@ extension MainViewController:UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = AddWeatherViewController()
         let AddWeatherNC = UINavigationController(rootViewController: vc)
-        AddWeatherNC.modalPresentationStyle = .fullScreen
-        AddWeatherNC.tabBarItem.image = UIImage(systemName: "list.bullet")
+//        AddWeatherNC.modalPresentationStyle = .fullScreen
+//        AddWeatherNC.tabBarItem.image = UIImage(systemName: "list.bullet")
         //        AddWeatherNC.modalTransitionStyle = .partialCurl
         present(AddWeatherNC, animated: true)
         tableView.deselectRow(at: indexPath, animated: false)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        print(indexPath.section)
+        //        print(indexPath.section)
         if indexPath.section != 0{
             if editingStyle == .delete{
                 WeatherStore.shared.remove(indexPath.section)
@@ -175,7 +182,6 @@ extension MainViewController:UISearchResultsUpdating{
     
 }
 
-
 //MARK: - SaveWeatherDelegate
 extension MainViewController:SaveWeatherDelegate{
     func saveWeather(weatherData: CurrentWeatherData) {
@@ -197,6 +203,22 @@ extension MainViewController:CLLocationManagerDelegate{
             let latitude = location.coordinate.latitude
             let longitude = location.coordinate.longitude
             // Handle location update
+            print(latitude)
+            print(longitude)
+            WeatherService.getWeather(by: .coord(latitude, longitude)) { result in
+                switch result {
+                case .success(let data):
+                    // get weather data
+                    WeatherStore.shared.changeLocation(data: data)
+                    DispatchQueue.main.async { [self] in
+                        self.mainTableView.reloadData()
+                    }
+                    break
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    break
+                }
+            }
         }
     }
 }
