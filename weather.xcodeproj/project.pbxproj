@@ -14,8 +14,8 @@
 		35771C92282A1C5A0011CBB9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35771C90282A1C5A0011CBB9 /* LaunchScreen.storyboard */; };
 		35771C9F282A4EFF0011CBB9 /* CurrentWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35771C9E282A4EFF0011CBB9 /* CurrentWeatherData.swift */; };
 		35771CA4282A6AAC0011CBB9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 35771CA3282A6AAC0011CBB9 /* SnapKit */; };
-		35A33DED28448C7800AD3054 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A33DEC28448C7800AD3054 /* TabBarViewController.swift */; };
 		35A33DF02844931700AD3054 /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A33DEF2844931700AD3054 /* TimeIntervalExtension.swift */; };
+		35A33DF42845FCC900AD3054 /* MainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A33DF32845FCC900AD3054 /* MainPageViewController.swift */; };
 		35B82F36282F6046007E96AE /* AddWeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B82F35282F6046007E96AE /* AddWeatherViewController.swift */; };
 		35B82F38283130E0007E96AE /* AddWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B82F37283130E0007E96AE /* AddWeatherView.swift */; };
 		35B82F3C283DDF19007E96AE /* CoordinateSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B82F3B283DDF19007E96AE /* CoordinateSearchViewController.swift */; };
@@ -36,8 +36,8 @@
 		35771C91282A1C5A0011CBB9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		35771C93282A1C5A0011CBB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35771C9E282A4EFF0011CBB9 /* CurrentWeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherData.swift; sourceTree = "<group>"; };
-		35A33DEC28448C7800AD3054 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		35A33DEF2844931700AD3054 /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
+		35A33DF32845FCC900AD3054 /* MainPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageViewController.swift; sourceTree = "<group>"; };
 		35B82F35282F6046007E96AE /* AddWeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWeatherViewController.swift; sourceTree = "<group>"; };
 		35B82F37283130E0007E96AE /* AddWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWeatherView.swift; sourceTree = "<group>"; };
 		35B82F3B283DDF19007E96AE /* CoordinateSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateSearchViewController.swift; sourceTree = "<group>"; };
@@ -97,7 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				35771C89282A1C580011CBB9 /* MainViewController.swift */,
-				35A33DEC28448C7800AD3054 /* TabBarViewController.swift */,
+				35A33DF32845FCC900AD3054 /* MainPageViewController.swift */,
 				35BF1A85282BAD0700373743 /* SearchTableViewController.swift */,
 				35B82F3B283DDF19007E96AE /* CoordinateSearchViewController.swift */,
 				35B82F35282F6046007E96AE /* AddWeatherViewController.swift */,
@@ -215,9 +215,9 @@
 				35B82F3C283DDF19007E96AE /* CoordinateSearchViewController.swift in Sources */,
 				35771C8A282A1C580011CBB9 /* MainViewController.swift in Sources */,
 				35B82F36282F6046007E96AE /* AddWeatherViewController.swift in Sources */,
-				35A33DED28448C7800AD3054 /* TabBarViewController.swift in Sources */,
 				35BF1A84282BA69200373743 /* APIKey.swift in Sources */,
 				35BF1A88282CB41F00373743 /* WeatherStore.swift in Sources */,
+				35A33DF42845FCC900AD3054 /* MainPageViewController.swift in Sources */,
 				35771C86282A1C580011CBB9 /* AppDelegate.swift in Sources */,
 				35B82F38283130E0007E96AE /* AddWeatherView.swift in Sources */,
 				35BF1A8A282E095300373743 /* CountryData.swift in Sources */,

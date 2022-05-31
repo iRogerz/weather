@@ -10,7 +10,7 @@ import Foundation
 extension TimeInterval{
     
     private var hours:Int {
-        return (Int(self) / 3600) % 100
+        return (Int(self) / 3600) % 100 % 24
     }
     
     private var minutes:Int {
@@ -23,7 +23,7 @@ extension TimeInterval{
     
     var stringTime: String{
         if minutes < 10{
-            return "\(hours):0\(minutes)"
+            return  "\(hours):0\(minutes)"
         }else{
             return "\(hours):\(minutes)"
         }

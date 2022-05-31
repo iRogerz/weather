@@ -8,7 +8,6 @@
 import UIKit
 import SnapKit
 import CoreLocation
-import Foundation
 
 var timer: Timer?
 class MainViewController: UIViewController {
@@ -36,8 +35,9 @@ class MainViewController: UIViewController {
         setupNavigation()
         setupUI()
         allCountry.getCountry()
+        WeatherStore.shared.updateAPI()
         //API大概10分鐘才會更新一次，我設定一分鐘就偵測一次
-        timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(callAPI), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 180, target: self, selector: #selector(callAPI), userInfo: nil, repeats: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -147,17 +147,15 @@ extension MainViewController:UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = AddWeatherViewController()
-        let AddWeatherNC = UINavigationController(rootViewController: vc)
-//        AddWeatherNC.modalPresentationStyle = .fullScreen
-//        AddWeatherNC.tabBarItem.image = UIImage(systemName: "list.bullet")
-        //        AddWeatherNC.modalTransitionStyle = .partialCurl
-        present(AddWeatherNC, animated: true)
+        let vc = MainPageViewController()
+        vc.initialPage = indexPath.section
+        let tabbarNC = UINavigationController(rootViewController: vc)
+        tabbarNC.modalPresentationStyle = .fullScreen
+        present(tabbarNC, animated: true)
         tableView.deselectRow(at: indexPath, animated: false)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        //        print(indexPath.section)
         if indexPath.section != 0{
             if editingStyle == .delete{
                 WeatherStore.shared.remove(indexPath.section)
