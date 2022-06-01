@@ -17,13 +17,18 @@ class MainViewController: UIViewController {
     var coordinateSearchViewController = CoordinateSearchViewController()
     let locationManager = CLLocationManager()
     
-    
     //MARK: - UI
     let mainTableView:UITableView = {
         let mainTableView = UITableView(frame: .zero, style: .insetGrouped)
         mainTableView.register(MainTableViewCell.self, forCellReuseIdentifier: "cell")
         //        mainTableView.rowHeight = 100
         return mainTableView
+    }()
+    
+    let refreshControl: UIRefreshControl = {
+       let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(callAPI), for: .valueChanged)
+        return refreshControl
     }()
     
     //MARK: - lifecycle
@@ -35,19 +40,26 @@ class MainViewController: UIViewController {
         setupNavigation()
         setupUI()
         allCountry.getCountry()
-        WeatherStore.shared.updateAPI()
+        callAPI()
         //API大概10分鐘才會更新一次，我設定一分鐘就偵測一次
-        timer = Timer.scheduledTimer(timeInterval: 180, target: self, selector: #selector(callAPI), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(callAPI), userInfo: nil, repeats: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         timer?.invalidate()
     }
-    
+
     @objc func callAPI(){
         WeatherStore.shared.updateAPI()
-        mainTableView.reloadData()
+        WeatherStore.shared.callBackReloadData = {index in
+            DispatchQueue.main.async {
+                self.mainTableView.reloadSections(IndexSet(integer: index), with: .automatic)
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) { [self] in
+            refreshControl.endRefreshing()
+        }
     }
     
     func delegate(){
@@ -67,6 +79,7 @@ class MainViewController: UIViewController {
     
     private func setupUI(){
         view.addSubview(mainTableView)
+        mainTableView.addSubview(refreshControl)
         mainTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -122,8 +135,6 @@ extension MainViewController: UITableViewDataSource{
         cell.destributionLabel.text = currentWeather.weather[indexPath.row].description
         cell.tempLabel.text = String(lround(currentWeather.main.temp))
         cell.temp_MaxMin.text = "H: \(lround(currentWeather.main.temp_max))   L: \(lround(currentWeather.main.temp_min))"
-        //        cell.backgroundColor = UIColor.white
-        //        cell.layer.borderColor = UIColor.black.cgColor
         cell.layer.borderWidth = 1
         return cell
     }
@@ -138,7 +149,7 @@ extension MainViewController:UITableViewDelegate{
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
-        headerView.backgroundColor = UIColor.clear
+        headerView.backgroundColor = .clear
         return headerView
     }
     

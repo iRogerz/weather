@@ -10,7 +10,9 @@ import Foundation
 
 class WeatherStore{
     
+    //signleton
     static let shared = WeatherStore()
+    var callBackReloadData:((Int) -> (Void))?
     
     private let userDefault = UserDefaults.standard
     
@@ -19,13 +21,17 @@ class WeatherStore{
             saveData()
         }
     }
+    
     func updateAPI(){
         for index in 0...weathers.count-1{
             WeatherService.getWeather(by: .city(weathers[index].name)) { result in
                 switch result {
                 case .success(let data):
                     // get weather data
-                    self.weathers[index] = data
+                    if self.weathers[index].dt != data.dt{
+                        self.weathers[index] = data
+                        self.callBackReloadData?(index)
+                    }
                     break
                 case .failure(let error):
                     print(error.localizedDescription)

@@ -16,7 +16,7 @@ class Network {
                      completion: @escaping (Result<Data, Error>) -> Void)
     {
         var components = URLComponents(string: url)
-        var queryItems = parameters.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
+        let queryItems = parameters.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
         components?.queryItems = queryItems
         guard let url = components?.url else {
             completion(.failure(NetworkError.urlIsNil))

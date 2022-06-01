@@ -74,7 +74,7 @@ class MainPageViewController: UIPageViewController {
 
 extension MainPageViewController:UIPageViewControllerDataSource{
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let currentIndex = pages.index(of: viewController) else { return nil }
+        guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
         
         let previousIndex = currentIndex - 1
         
@@ -84,8 +84,9 @@ extension MainPageViewController:UIPageViewControllerDataSource{
         
         return pages[previousIndex]
     }
+    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let currentIndex = pages.index(of: viewController) else { return nil }
+        guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
         
         let nextIndex = currentIndex + 1
         
@@ -99,24 +100,7 @@ extension MainPageViewController:UIPageViewControllerDataSource{
 
 
 extension MainPageViewController: UIPageViewControllerDelegate {
-    
-    // if you do NOT want the built-in PageControl (the "dots"), comment-out these funcs
-    //    func presentationCount(for pageViewController: UIPageViewController) -> Int {
-    //        return pages.count
-    //    }
-    //
-    //    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
-    //
-    //        guard let firstVC = pageViewController.viewControllers?.first else {
-    //            return 0
-    //        }
-    //        guard let firstVCIndex = pages.index(of: firstVC) else {
-    //            return 0
-    //        }
-    //
-    //        return firstVCIndex
-    //    }
-    
+
 //    override func setViewControllers(_ viewControllers: [UIViewController]?, direction: UIPageViewController.NavigationDirection, animated: Bool, completion: ((Bool) -> Void)? = nil) {
 //        <#code#>
 //    }
@@ -125,7 +109,7 @@ extension MainPageViewController: UIPageViewControllerDelegate {
 
         // set the pageControl.currentPage to the index of the current viewController in pages
         if let viewControllers = pageViewController.viewControllers {
-            if let viewControllerIndex = self.pages.index(of: viewControllers[0]) {
+            if let viewControllerIndex = self.pages.firstIndex(of: viewControllers[0]) {
                 self.pageControl.currentPage = viewControllerIndex
             }
         }
