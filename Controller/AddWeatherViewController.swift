@@ -64,6 +64,7 @@ class AddWeatherViewController: UIViewController {
         delegate?.saveWeather(weatherData: tempWeatherData!)
         //        dismiss(animated: true)
         view.window?.rootViewController?.dismiss(animated: true)
-        
     }
 }
+
+

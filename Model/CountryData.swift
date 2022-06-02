@@ -43,12 +43,12 @@ class AllCountry{
                     
                     let decoder = JSONDecoder()
                     if let data = try? decoder.decode(CountryData.self, from: data){
-//                        for country in data.data.sorted(by: {$0.country < $1.country}) {
-//                            self.append(country.country)
-//                        }
-                        for country in data.data{
+                        for country in data.data.sorted(by: {$0.country < $1.country}) {
                             self.append(country.country)
                         }
+//                        for country in data.data{
+//                            self.append(country.country)
+//                        }
                     }
                 }
             }.resume()

@@ -195,7 +195,6 @@ extension MainViewController:UISearchResultsUpdating{
 extension MainViewController:SaveWeatherDelegate{
     func saveWeather(weatherData: CurrentWeatherData) {
         WeatherStore.shared.append(weatherData)
-        
         DispatchQueue.main.async {
             self.mainTableView.reloadData()
         }
