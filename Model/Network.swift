@@ -52,7 +52,7 @@ class WeatherService {
     
     private static let baseURL = "https://api.openweathermap.org/data/2.5/weather"
     private static let fiveDayURL = "https://api.openweathermap.org/data/2.5/forecast"
-    
+
     static func getWeather(by method: WeatherMethod,
                            completion: @escaping (Result<CurrentWeatherData, Error>) -> Void) {
         var parameters: [String: Any] = [:]
@@ -67,8 +67,7 @@ class WeatherService {
         case .code(let code):
             parameters["code"] = code
         }
-        
-        parameters["appid"] = APIKeys.apikey
+        parameters["appid"] = APIKey.apiKey
         Network.send(url: baseURL, parameters: parameters) { result in
             switch result {
             case .success(let data):

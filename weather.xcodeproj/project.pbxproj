@@ -25,10 +25,10 @@
 		35B82F38283130E0007E96AE /* AddWeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B82F37283130E0007E96AE /* AddWeatherView.swift */; };
 		35B82F3C283DDF19007E96AE /* CoordinateSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B82F3B283DDF19007E96AE /* CoordinateSearchViewController.swift */; };
 		35BF1A80282B9FA500373743 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BF1A7F282B9FA500373743 /* MainTableViewCell.swift */; };
-		35BF1A84282BA69200373743 /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BF1A83282BA69200373743 /* APIKey.swift */; };
 		35BF1A86282BAD0700373743 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BF1A85282BAD0700373743 /* SearchTableViewController.swift */; };
 		35BF1A88282CB41F00373743 /* WeatherStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BF1A87282CB41F00373743 /* WeatherStore.swift */; };
 		35BF1A8A282E095300373743 /* CountryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BF1A89282E095300373743 /* CountryData.swift */; };
+		35D8B0C02872E5B300D48736 /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D8B0BF2872E5B300D48736 /* APIKey.swift */; };
 		35FD8BBE28408E48000CB9E4 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FD8BBD28408E48000CB9E4 /* Network.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,10 +52,10 @@
 		35B82F37283130E0007E96AE /* AddWeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWeatherView.swift; sourceTree = "<group>"; };
 		35B82F3B283DDF19007E96AE /* CoordinateSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateSearchViewController.swift; sourceTree = "<group>"; };
 		35BF1A7F282B9FA500373743 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
-		35BF1A83282BA69200373743 /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
 		35BF1A85282BAD0700373743 /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		35BF1A87282CB41F00373743 /* WeatherStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherStore.swift; sourceTree = "<group>"; };
 		35BF1A89282E095300373743 /* CountryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryData.swift; sourceTree = "<group>"; };
+		35D8B0BF2872E5B300D48736 /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
 		35FD8BBD28408E48000CB9E4 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -135,8 +135,8 @@
 				35771C9E282A4EFF0011CBB9 /* CurrentWeatherData.swift */,
 				35A33DF9284DD8A200AD3054 /* FiveDayForecastData.swift */,
 				35BF1A89282E095300373743 /* CountryData.swift */,
-				35BF1A83282BA69200373743 /* APIKey.swift */,
 				35FD8BBD28408E48000CB9E4 /* Network.swift */,
+				35D8B0BF2872E5B300D48736 /* APIKey.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -232,7 +232,6 @@
 				35771C8A282A1C580011CBB9 /* MainViewController.swift in Sources */,
 				356C5141284F09D300552F6E /* MainHeaderCollectionReusableView.swift in Sources */,
 				35B82F36282F6046007E96AE /* AddWeatherViewController.swift in Sources */,
-				35BF1A84282BA69200373743 /* APIKey.swift in Sources */,
 				35BF1A88282CB41F00373743 /* WeatherStore.swift in Sources */,
 				35A33DF42845FCC900AD3054 /* MainPageViewController.swift in Sources */,
 				35771C86282A1C580011CBB9 /* AppDelegate.swift in Sources */,
@@ -240,6 +239,7 @@
 				35A33DFC284DE39500AD3054 /* FiveDayForecastTableViewCell.swift in Sources */,
 				356C513D284DF7E100552F6E /* HourlyCollectionViewCell.swift in Sources */,
 				35BF1A8A282E095300373743 /* CountryData.swift in Sources */,
+				35D8B0C02872E5B300D48736 /* APIKey.swift in Sources */,
 				35A33DFA284DD8A200AD3054 /* FiveDayForecastData.swift in Sources */,
 				35771C88282A1C580011CBB9 /* SceneDelegate.swift in Sources */,
 				35BF1A80282B9FA500373743 /* MainTableViewCell.swift in Sources */,
