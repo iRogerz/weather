@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 struct CountryData:Decodable{
     var data:[Country]
 }

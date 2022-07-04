@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct CurrentWeatherData: Codable{
     var name: String
     var dt: TimeInterval

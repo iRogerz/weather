@@ -17,7 +17,7 @@ class AddWeatherViewController: UIViewController {
     override func loadView() {
         self.view = addWeatherView
     }
-    
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .secondarySystemGroupedBackground
@@ -35,6 +35,7 @@ class AddWeatherViewController: UIViewController {
         navigationItem.rightBarButtonItem?.tintColor = .white
         navigationItem.leftBarButtonItem?.tintColor = .white
     }
+
     
     func getWeather(_ weatherMethod: WeatherMethod){
         WeatherService.getWeather(by: weatherMethod) { result in
@@ -67,4 +68,17 @@ class AddWeatherViewController: UIViewController {
     }
 }
 
+//extension AddWeatherViewController:UICollectionViewDataSource{
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return 1
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+//        return cell
+//    }
+//
+//
+//}
+//
 

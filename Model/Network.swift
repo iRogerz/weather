@@ -51,6 +51,7 @@ extension Network {
 class WeatherService {
     
     private static let baseURL = "https://api.openweathermap.org/data/2.5/weather"
+    private static let fiveDayURL = "https://api.openweathermap.org/data/2.5/forecast"
     
     static func getWeather(by method: WeatherMethod,
                            completion: @escaping (Result<CurrentWeatherData, Error>) -> Void) {

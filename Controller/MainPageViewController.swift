@@ -20,7 +20,7 @@ class MainPageViewController: UIPageViewController {
         pageControl.setIndicatorImage(UIImage(systemName: "location.fill"), forPage: 0)
         return pageControl
     }()
-    
+
     //transtion style改為scroll
     override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)

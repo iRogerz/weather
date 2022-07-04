@@ -131,7 +131,7 @@ extension MainViewController: UITableViewDataSource{
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? MainTableViewCell else {return UITableViewCell()}
         let currentWeather = WeatherStore.shared.weathers[indexPath.section]
         cell.locationLabel.text = currentWeather.name
-        cell.timeLabel.text = currentWeather.dt.stringTime
+        cell.timeLabel.text = currentWeather.dt.time(format: "HH:mm")
         cell.destributionLabel.text = currentWeather.weather[indexPath.row].description
         cell.tempLabel.text = String(lround(currentWeather.main.temp))
         cell.temp_MaxMin.text = "H: \(lround(currentWeather.main.temp_max))   L: \(lround(currentWeather.main.temp_min))"
@@ -160,9 +160,10 @@ extension MainViewController:UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = MainPageViewController()
         vc.initialPage = indexPath.section
-        let tabbarNC = UINavigationController(rootViewController: vc)
-        tabbarNC.modalPresentationStyle = .fullScreen
-        present(tabbarNC, animated: true)
+        let mainPageNav = UINavigationController(rootViewController: vc)
+        mainPageNav.navigationBar.isHidden = true
+        mainPageNav.modalPresentationStyle = .fullScreen
+        present(mainPageNav, animated: true)
         tableView.deselectRow(at: indexPath, animated: false)
     }
     
