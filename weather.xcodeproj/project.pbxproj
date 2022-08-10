@@ -110,7 +110,6 @@
 				35A33DF32845FCC900AD3054 /* MainPageViewController.swift */,
 				35BF1A85282BAD0700373743 /* SearchTableViewController.swift */,
 				35B82F3B283DDF19007E96AE /* CoordinateSearchViewController.swift */,
-				356C513C284DF7E100552F6E /* HourlyCollectionViewCell.swift */,
 				35B82F35282F6046007E96AE /* AddWeatherViewController.swift */,
 			);
 			path = Controller;
@@ -124,6 +123,7 @@
 				356C513E284E2D3500552F6E /* MainCollectionViewCell.swift */,
 				356C5140284F09D300552F6E /* MainHeaderCollectionReusableView.swift */,
 				35A33DFB284DE39500AD3054 /* FiveDayForecastTableViewCell.swift */,
+				356C513C284DF7E100552F6E /* HourlyCollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

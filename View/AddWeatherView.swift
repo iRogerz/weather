@@ -20,7 +20,7 @@ class AddWeatherView: UIView {
         //        scrollView.contentInset.top = 0
         //        scrollView.showsVerticalScrollIndicator = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-            scrollView.backgroundColor = .gray
+//            scrollView.backgroundColor = .gray
         return scrollView
     }()
     
@@ -48,7 +48,7 @@ class AddWeatherView: UIView {
         let stackView = UIStackView(arrangedSubviews: [
             locationLabel, tempLabel, destributionLabel, temp_MaxMin
         ])
-        stackView.backgroundColor = .blue
+//        stackView.backgroundColor = .blue
         stackView.setCustomSpacing(4, after: destributionLabel)
         stackView.spacing = 8
         stackView.axis = .vertical
@@ -106,8 +106,8 @@ class AddWeatherView: UIView {
         
         addSubview(labelStackView)
         addSubview(mainScrollView)
-        mainScrollView.addSubview(mainContentView)
-        mainContentView.addSubview(mainCollectionView)
+//        mainScrollView.addSubview(mainContentView)
+//        mainContentView.addSubview(mainCollectionView)
     }
     
 //    func setupView() {
@@ -156,14 +156,14 @@ class AddWeatherView: UIView {
             make.edges.equalTo(safeAreaLayoutGuide).inset(UIEdgeInsets(top: 200, left: 0, bottom: 0, right: 0))
         }
         
-        mainContentView.snp.makeConstraints { make in
-            make.width.edges.equalToSuperview()
-        }
-        
-        mainCollectionView.snp.makeConstraints { make in
-            make.edges.equalTo(safeAreaLayoutGuide).inset(UIEdgeInsets(top: 200, left: 16, bottom: 0, right: 16))
-            make.height.equalToSuperview()
-        }
+//        mainContentView.snp.makeConstraints { make in
+//            make.width.edges.equalToSuperview()
+//        }
+//
+//        mainCollectionView.snp.makeConstraints { make in
+//            make.edges.equalTo(safeAreaLayoutGuide).inset(UIEdgeInsets(top: 200, left: 16, bottom: 0, right: 16))
+//            make.height.equalToSuperview()
+//        }
         
     }
     
